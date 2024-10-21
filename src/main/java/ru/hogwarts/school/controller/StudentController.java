@@ -38,8 +38,8 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
-        Student isDeleted = studentService.removeStudent(id);
-        return ResponseEntity.ok(isDeleted);
+        studentService.removeStudent(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/age/{age}")
@@ -49,4 +49,8 @@ public class StudentController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredStudents);
     }
+//    @GetMapping("/find-all")
+//    public ResponseEntity<List<Student>> getAllStudents() {
+//      return (ResponseEntity<List<Student>>) studentService.getAllStudents();
+//    }
 }
