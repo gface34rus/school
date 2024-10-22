@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,8 +50,9 @@ public class StudentController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredStudents);
     }
-//    @GetMapping("/find-all")
-//    public ResponseEntity<List<Student>> getAllStudents() {
-//      return (ResponseEntity<List<Student>>) studentService.getAllStudents();
-//    }
+
+    @GetMapping("/find-all")
+    public Collection<Student> getAllStudents() {
+        return studentService.getAllStudents();
+    }
 }

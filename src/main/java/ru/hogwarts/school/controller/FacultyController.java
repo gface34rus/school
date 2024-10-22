@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,8 +52,8 @@ public class FacultyController {
     }
 
     @GetMapping("/find-all")
-    public ResponseEntity<List<Student>> getAllFaculties() {
-        return (ResponseEntity<List<Student>>) facultyService.getAllFaculties();
+    public Collection<Faculty> getAllFaculties() {
+        return facultyService.getAllFaculties();
 
     }
 }
