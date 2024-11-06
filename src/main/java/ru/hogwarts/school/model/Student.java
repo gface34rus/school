@@ -30,6 +30,11 @@ public class Student {
         this.faculty = faculty;
     }
 
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
     public Student() {
 
     }
