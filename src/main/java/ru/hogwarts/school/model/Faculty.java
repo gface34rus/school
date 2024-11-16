@@ -22,6 +22,10 @@ public class Faculty {
         this.color = color;
         this.students = students;
     }
+    public Faculty(String name, String color) {
+        this.name = name;
+        this.color = color;
+    }
 
     public Faculty() {
 
