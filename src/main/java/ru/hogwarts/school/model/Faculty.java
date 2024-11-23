@@ -1,34 +1,32 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Faculty {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String color;
-    @OneToMany(mappedBy = "faculty")
 
-    private Collection<Student> students;
+    // Связь OneToMany с ленивой загрузкой
+    @OneToMany(mappedBy = "faculty",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Student> students = new ArrayList<>();
 
-    public Faculty(Long id, String name, String color, Collection<Student> students) {
-        this.id = id;
-        this.name = name;
-        this.color = color;
-        this.students = students;
+    public Faculty() {
     }
+
     public Faculty(String name, String color) {
         this.name = name;
         this.color = color;
-    }
-
-    public Faculty() {
-
     }
 
     public Long getId() {
@@ -51,16 +49,16 @@ public class Faculty {
         return color;
     }
 
-    public Collection<Student> getStudents() {
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(Collection<Student> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     @Override
@@ -69,7 +67,6 @@ public class Faculty {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", color='" + color + '\'' +
-                ", students=" + students +
                 '}';
     }
 
