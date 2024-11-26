@@ -1,52 +1,22 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.FacultyRepository;
-import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-@Service
-public class StudentService {
-    private final StudentRepository studentRepository;
+public interface StudentService {
+    Student getStudent(Long id);
 
+    Student addStudent(Student student);
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    Student updateStudent(Long id, Student updatedStudent);
 
-    }
+    void removeStudent(Long id);
 
-    public Student addStudent(Student student) {
-        return studentRepository.save(student);
-    }
+    Collection<Student> getAllStudents();
 
-    public Student getStudent(Long id) {
-        return studentRepository.findById(id).get();
-    }
+    Collection<Student> getStudentsByAgeBetween(Integer minAge, Integer maxAge);
 
-    public Student updateStudent(Long id, Student updatedStudent) {
-        return studentRepository.save(updatedStudent);
-    }
-
-    public void removeStudent(Long id) {
-        studentRepository.deleteById(id);
-    }
-
-    public Collection<Student> getAllStudents() {
-        return studentRepository.findAll();
-    }
-
-    public Collection<Student> getStudentsByAgeBetween(Integer minAge, Integer maxAge) {
-        return studentRepository.findByAgeBetween(minAge, maxAge);
-    }
-
-    public Faculty getStudentFaculty(Long id) {
-        return studentRepository.findById(id).get().getFaculty();
-    }
+    Faculty getStudentFaculty(Long id);
 }
