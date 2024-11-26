@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
@@ -19,4 +21,11 @@ public interface StudentService {
     Collection<Student> getStudentsByAgeBetween(Integer minAge, Integer maxAge);
 
     Faculty getStudentFaculty(Long id);
+
+    long getAllStudentsCount();
+
+    double findAverageAgeByAllStudentsInTable();
+
+    Page<Student> findLastFiveStudents();
+
 }

@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,5 +94,10 @@ public class AvatarServiceImpl implements AvatarService {
 
     private String getExtension(String path) {
         return path.substring(path.lastIndexOf('.'));
+    }
+
+    @Override
+    public Page<Avatar> getAllAvatars(Pageable pageable) {
+        return avatarRepository.findAll(pageable);
     }
 }
