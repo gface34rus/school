@@ -1,5 +1,7 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -66,5 +68,20 @@ public class StudentController {
     @GetMapping("/get-faculty/{id}")
     public Faculty getFaculty(@PathVariable Long id) {
         return studentService.getStudentFaculty(id);
+    }
+
+    @GetMapping("/find-all-count")
+    public long getAllStudentsCount() {
+        return studentService.getAllStudentsCount();
+    }
+
+    @GetMapping("/find-average-age")
+    public double findAverageAgeByAllStudentsInTable() {
+        return studentService.findAverageAgeByAllStudentsInTable();
+    }
+
+    @GetMapping("/find-last-5-students")
+    public ResponseEntity<Page<Student>> lastFiveStudents() {
+        return ResponseEntity.ok(studentService.findLastFiveStudents());
     }
 }

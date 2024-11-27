@@ -2,6 +2,9 @@ package ru.hogwarts.school.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -53,5 +56,21 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Faculty getStudentFaculty(Long id) {
         return studentRepository.findById(id).get().getFaculty();
+    }
+
+    @Override
+    public long getAllStudentsCount() {
+        return studentRepository.count();
+    }
+
+    @Override
+    public double findAverageAgeByAllStudentsInTable() {
+        return studentRepository.findAverageAgeByAllStudentsInTable();
+    }
+
+    @Override
+    public Page<Student> findLastFiveStudents() {
+        Pageable pageable = PageRequest.of(0, 5);
+        return studentRepository.findLastFiveStudents(pageable);
     }
 }
