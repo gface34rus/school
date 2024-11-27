@@ -81,7 +81,7 @@ public class StudentController {
     }
 
     @GetMapping("/find-last-5-students")
-    public ResponseEntity<Page<Student>> lastFiveStudents() {
+    public ResponseEntity<List<Student>> lastFiveStudents() {
         return ResponseEntity.ok(studentService.findLastFiveStudents());
     }
 }

@@ -12,6 +12,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional
@@ -69,8 +70,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<Student> findLastFiveStudents() {
-        Pageable pageable = PageRequest.of(0, 5);
-        return studentRepository.findLastFiveStudents(pageable);
+    public List<Student> findLastFiveStudents() {
+        return studentRepository.findLastFiveStudents();
     }
 }

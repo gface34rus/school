@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     Collection<Student> findByAgeBetween(Integer minAge, Integer maxAge);
@@ -18,8 +19,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "SELECT AVG(age) FROM Student ", nativeQuery = true)
     double findAverageAgeByAllStudentsInTable();
 
-    @Query(value = "SELECT * FROM Student ORDER BY id DESC", nativeQuery = true)
-    Page<Student> findLastFiveStudents(Pageable pageable);
+    @Query(value = "SELECT * FROM Student ORDER BY id DESC LIMIT 5", nativeQuery = true)
+    List<Student> findLastFiveStudents();
 }
 
 
