@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 public class AvatarServiceImpl implements AvatarService {
     @Value("${image.path}")
     private Path pathDir;
+    private final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
     private final AvatarMapper avatarMapper;
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
@@ -42,7 +45,10 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public long uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("Student not found"));
+        logger.info("Was invoked method for upload avatar");
+        Student student = studentRepository
+                .findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found"));
         Path path = saveAvatarLocal(file);
 
         System.out.println(path);
@@ -59,6 +65,7 @@ public class AvatarServiceImpl implements AvatarService {
                     try {
                         Files.delete(Path.of(x.getFilePath()));
                     } catch (IOException e) {
+                        logger.error("new AvatarNotFoundException(\"Avatar not found\")");
                         throw new AvatarNotFoundException("Avatar not found");
                     }
                     avatar.setId(x.getId());
@@ -69,6 +76,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar getAvatarFromDb(Long studentId) {
+        logger.info("Was invoked method for get avatar from db");
         return avatarRepository.
                 findByStudentId(studentId).
                 orElseThrow(() -> new AvatarNotFoundException("Avatar not found"));
@@ -76,6 +84,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public AvatarView getAvatarFromLocal(Long studentId) throws IOException {
+        logger.info("Was invoked method for get avatar from local file");
         Avatar avatar = avatarRepository
                 .findByStudentId(studentId)
                 .orElseThrow(() -> new AvatarNotFoundException("Avatar not found"));
@@ -86,6 +95,7 @@ public class AvatarServiceImpl implements AvatarService {
     private Path saveAvatarLocal(MultipartFile file) throws IOException {
         createDirectoryIfNotExists();
         if (file.getOriginalFilename() == null) {
+            logger.error("new RuntimeException(\"Incorrect file extension\")");
             throw new RuntimeException("Incorrect file extension");
         }
         Path path = Path.of(pathDir.toString(), UUID.randomUUID() + getExtension(file.getOriginalFilename()));
@@ -105,11 +115,13 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Page<Avatar> getAllAvatars(Pageable pageable) {
+        logger.info("Was invoked method for get all avatars");
         return avatarRepository.findAll(pageable);
     }
 
     @Override
     public List<AvatarDto> getAvatars(int page, int size) {
+        logger.info("Was invoked method for get all avatars 2");
         return avatarRepository.findAll(PageRequest.of(page, size))
                 .get()
                 .map(avatarMapper::toDto)
