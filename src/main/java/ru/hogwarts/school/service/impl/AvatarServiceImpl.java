@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class AvatarServiceImpl implements AvatarService {
     @Value("${image.path}")
     private Path pathDir;
-    private final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
     private final AvatarMapper avatarMapper;
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
@@ -45,7 +45,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public long uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-        logger.info("Was invoked method for upload avatar");
+        logger.info("Was invoked method for upload avatar with id- "+studentId+" and file- "+file.getOriginalFilename());
         Student student = studentRepository
                 .findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found"));

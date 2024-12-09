@@ -15,12 +15,13 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
-    private final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -86,4 +87,24 @@ public class StudentServiceImpl implements StudentService {
         logger.info("Was invoked method for find last five students");
         return studentRepository.findLastFiveStudents();
     }
+
+    @Override
+    public List<String> getStudentsStartingWithA() {
+        List<Student> students = studentRepository.findAll();
+        return students.stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(upperCase -> upperCase.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public double getAverageAge() {
+        return studentRepository.findAll().stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElse(0);
+    }
 }
+
