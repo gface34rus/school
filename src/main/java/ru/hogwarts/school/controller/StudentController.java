@@ -85,12 +85,22 @@ public class StudentController {
         return ResponseEntity.ok(studentService.findLastFiveStudents());
     }
 
-    @GetMapping("/students/a")
-    public List<String> getStudentsStartingWithA(){
+    @GetMapping("/a")
+    public List<String> getStudentsStartingWithA() {
         return studentService.getStudentsStartingWithA();
     }
+
     @GetMapping("/get-avg-age")
     public double getAverageAge() {
         return studentService.getAverageAge();
+    }
+
+    @GetMapping("/print-parallel")
+    public void printParallel() {
+        studentService.printParallel();
+    }
+    @GetMapping("/print-synchronized")
+    public void printSynchronized() {
+        studentService.printSynchronized();
     }
 }

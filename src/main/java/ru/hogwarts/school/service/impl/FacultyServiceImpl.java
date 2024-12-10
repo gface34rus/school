@@ -2,6 +2,7 @@ package ru.hogwarts.school.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.model.Faculty;
@@ -11,6 +12,8 @@ import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -20,6 +23,7 @@ public class FacultyServiceImpl implements FacultyService {
     private final Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
 
     public FacultyServiceImpl(FacultyRepository facultyRepository) {
+
         this.facultyRepository = facultyRepository;
     }
 
@@ -74,6 +78,15 @@ public class FacultyServiceImpl implements FacultyService {
         return facultyRepository.findAll().stream()
                 .map(Faculty::getName)
                 .max(Comparator.comparingInt(String::length))
-                .orElseThrow(()-> new FacultyNotFoundException(0L));
+                .orElseThrow(() -> new FacultyNotFoundException(0L));
     }
+
+    @Override
+    public ResponseEntity<List<Faculty>> getFacultiesByColor(String color) {
+        List<Faculty> filteredFaculties = facultyRepository.findAll().stream()
+                .filter(faculty -> faculty.getColor().equalsIgnoreCase(color))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredFaculties);
+    }
+
 }
