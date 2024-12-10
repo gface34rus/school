@@ -33,7 +33,7 @@ public class FacultyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Faculty> updateFaculty(@PathVariable Long id, @RequestBody Faculty updatedFaculty) {
-        System.out.println(updatedFaculty+" "+id);
+        System.out.println(updatedFaculty + " " + id);
         Faculty faculty = facultyService.updateFaculty(id, updatedFaculty);
 
         return ResponseEntity.ok(faculty);
@@ -47,10 +47,7 @@ public class FacultyController {
 
     @GetMapping("/color/{color}")
     public ResponseEntity<List<Faculty>> getFacultiesByColor(@PathVariable String color) {
-        List<Faculty> filteredFaculties = facultyService.getAllFaculties().stream()
-                .filter(faculty -> faculty.getColor().equalsIgnoreCase(color))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(filteredFaculties);
+        return facultyService.getFacultiesByColor(color);
     }
 
     @GetMapping("/find-all")
@@ -69,6 +66,7 @@ public class FacultyController {
     public Collection<Student> getFacultyStudents(@PathVariable Long facultyId) {
         return facultyService.getStudentsByFacultyId(facultyId);
     }
+
     @GetMapping("/get-longest-name")
     public String getFacultyLongestName() {
         return facultyService.getFacultyLongestName();
